@@ -1,0 +1,26 @@
+<form nz-form [formGroup]="form">
+  <div nz-row nzGutter="10">
+    <div nz-col [nzLg]="readonly ? 24 : nzLg[0]" nzSpan="24">
+      <nz-form-item>
+        <nz-form-label [nzFor]="numberField" nzRequired>{{numberLabel}}</nz-form-label>
+        <nz-form-control [nzErrorTip]="'请输入正确的' + numberLabel + '!'">
+          <input *ngIf="readonly" [readOnly]="readonly" nz-input maxlength="11" id="readOnlyNumber" [formControlName]="numberField" [placeholder]="numberPlaceholder">
+          <nz-input-group *ngIf="!readonly" nzSearch [nzAddOnAfter]="getCaptchaTpl">
+            <input nz-input maxlength="11" [id]="numberField" [formControlName]="numberField" [placeholder]="numberPlaceholder">
+          </nz-input-group>
+          <ng-template #getCaptchaTpl>
+            <button nz-button [disabled]="form.get(numberField).invalid" [nzLoading]="loading.loading() || captchaCountdown !== 0" nzType="primary" nzSearch (click)="sendCaptcha();">{{captchaText}}</button>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div *ngIf="!readonly" nz-col [nzLg]="nzLg[1]" nzSpan="24">
+      <nz-form-item>
+        <nz-form-label [nzFor]="captchaField" nzRequired>验证码</nz-form-label>
+        <nz-form-control nzErrorTip="请输入收到的验证码!">
+          <input nz-input [id]="captchaField" [formControlName]="captchaField" placeholder="验证码">
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+</form>
