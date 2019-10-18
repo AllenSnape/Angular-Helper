@@ -8,7 +8,6 @@ import * as uuid from 'uuid';
 import {Observable} from 'rxjs';
 import {LoadingService} from '../services/loading.service';
 import {finalize} from 'rxjs/operators';
-import {OSSURLConfig} from '../../configs/oss.config';
 import {FormGroup} from '@angular/forms';
 
 // region DEMO
@@ -108,7 +107,7 @@ export class OssService {
     const files = (e.target as HTMLInputElement).files;
     return new Observable(subscriber => {
       if (files) {
-        this.upload(OSSURLConfig.goods.desc, files[0]).subscribe(
+        this.upload(folder, files[0]).subscribe(
           key => subscriber.next(key),
           err => subscriber.error(err),
           () => {
