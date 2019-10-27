@@ -1,0 +1,8 @@
+<div *ngIf="!readOnly && !disabled" class="image-uploader-buttons">
+  <button nz-button nzType="primary" (click)="showFileSelector();">上传{{ label }}</button>
+  <button *ngIf="value" nz-button nzType="danger"
+          nz-popconfirm nzPopconfirmTitle="确定删除?" (nzOnConfirm)="onFileSelect();">删除{{ label }}</button>
+</div>
+<div class="image-uploader-image"><img (click)="showImageInNewTab(value);" [src]="value || LOGO" [alt]="label" [title]="label" /></div>
+
+<input #fileUploader type="file" accept="image/*" style="display: none;" (change)="onFileSelect($event);" />
