@@ -20,6 +20,10 @@ export class ImageUploaderComponent implements OnInit, ControlValueAccessor {
   // 默认图片
   readonly LOGO = 'https://angular.io/assets/images/logos/angular/angular.svg';
 
+  // 是否必填
+  @Input()
+  required = false;
+
   // 是否设置为了只读
   @Input()
   readOnly = false;
