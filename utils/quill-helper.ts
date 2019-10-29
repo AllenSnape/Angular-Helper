@@ -26,7 +26,8 @@ export const onQuillImageUpload = async (
               range.index, 'image',
               notSignSuffix ? signedUrl.substring(0, signedUrl.indexOf('?')) : signedUrl
             );
-            editor.quillEditor.setSelection(range.index + 1, 0);
+            editor.quillEditor.insertText(range.index + 1, '\n');
+            editor.quillEditor.setSelection(range.index + 2, 0);
 
             (e.target as HTMLInputElement).value = '';
 
