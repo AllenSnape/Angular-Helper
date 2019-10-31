@@ -48,6 +48,10 @@ export class ImageUploaderComponent implements OnInit, ControlValueAccessor {
   @Input()
   useURL = false;
 
+  // 默认图片
+  @Input()
+  placeholder: string = null;
+
   // input标签
   @ViewChild('fileUploader', { static: true })
   fileUploader: ElementRef<HTMLInputElement>;
@@ -84,8 +88,8 @@ export class ImageUploaderComponent implements OnInit, ControlValueAccessor {
    * 选择文件时
    * @param e 文件选择回调
    */
-  onFileSelect(e?: Event): void {
-    if (e) {
+  onFileSelect(e?: Event | boolean): void {
+    if (e instanceof Event) {
       if (this.oss) {
         this.oss.uploadInputChangeEvent(this.folder, e).subscribe(key => {
           this.value = this.oss.sign(key);
@@ -96,7 +100,7 @@ export class ImageUploaderComponent implements OnInit, ControlValueAccessor {
       }
     } else {
       this.value = null;
-      if (this.onChange) {
+      if (this.onChange && e !== false) {
         this.onChange(this.value);
       }
     }
@@ -139,7 +143,7 @@ export class ImageUploaderComponent implements OnInit, ControlValueAccessor {
         this.msg.info('文件系统暂未初始化!');
       }
     } else {
-      this.onFileSelect();
+      this.onFileSelect(false);
     }
   }
 
