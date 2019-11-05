@@ -90,3 +90,128 @@ export class DateUtils {
   }
 
 }
+
+/**
+ * 预设时间区间集
+ */
+export const INTERVALS = {
+  today: (): Date[] => {
+    const st = new Date();
+    st.setHours(0, 0, 0, 0);
+
+    const et = new Date();
+    et.setHours(23, 59, 59, 999);
+
+    return [st, et];
+  },
+  tomorrow: (): Date[] => {
+    const st = new Date();
+    st.setDate(st.getDate() + 1);
+    st.setHours(0, 0, 0, 0);
+
+    const et = new Date();
+    et.setDate(et.getDate() + 1);
+    et.setHours(23, 59, 59, 999);
+
+    return [st, et];
+  },
+  yesterday: (): Date[] => {
+    const st = new Date();
+    st.setDate(st.getDate() - 1);
+    st.setHours(0, 0, 0, 0);
+
+    const et = new Date();
+    et.setDate(et.getDate() - 1);
+    et.setHours(23, 59, 59, 999);
+
+    return [st, et];
+  },
+  'this week': (): Date[] => {
+    const st = new Date();
+    st.setDate(st.getDate() - st.getDay() + 1);
+    st.setHours(0, 0, 0, 0);
+
+    const et = new Date();
+    et.setDate(et.getDate() + 7 - st.getDay());
+    et.setHours(23, 59, 59, 999);
+
+    return [st, et];
+  },
+  'last 7 day': (): Date[] => {
+    const st = new Date();
+    st.setDate(st.getDate() - 7);
+    st.setHours(0, 0, 0, 0);
+
+    const et = new Date();
+    et.setHours(23, 59, 59, 999);
+
+    return [st, et];
+  },
+  'next 7 day': (): Date[] => {
+    const st = new Date();
+    st.setHours(0, 0, 0, 0);
+
+    const et = new Date();
+    et.setDate(et.getDate() + 7);
+    et.setHours(23, 59, 59, 999);
+
+    return [st, et];
+  },
+  'this month': (): Date[] => {
+    const st = new Date();
+    st.setDate(1);
+    st.setHours(0, 0, 0, 0);
+
+    const et = new Date();
+    et.setDate(getMonthDay(et.getMonth() + 1, et.getFullYear()));
+    et.setHours(23, 59, 59, 999);
+
+    return [st, et];
+  },
+  'last month': (): Date[] => {
+    const st = new Date();
+    st.setMonth(st.getMonth() - 1, 1);
+    st.setHours(0, 0, 0, 0);
+
+    const et = new Date();
+    et.setMonth(et.getMonth() - 1, getMonthDay(et.getMonth(), et.getFullYear()));
+    et.setHours(23, 59, 59, 999);
+
+    return [st, et];
+  },
+  'next month': (): Date[] => {
+    const st = new Date();
+    st.setMonth(st.getMonth() + 1, 1);
+    st.setHours(0, 0, 0, 0);
+
+    const et = new Date();
+    et.setMonth(et.getMonth() + 1, getMonthDay(et.getMonth(), et.getFullYear()));
+    et.setHours(23, 59, 59, 999);
+
+    return [st, et];
+  },
+};
+
+/**
+ * 获取月份的天数
+ * @param month 月份
+ * @param year 年份
+ */
+export const getMonthDay = (month: number, year: number = new Date().getFullYear()): number => {
+  switch (month) {
+    case 1:
+    case 3:
+    case 5:
+    case 7:
+    case 8:
+    case 10:
+    case 12: return 31;
+    case 2: return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0 ? 29 : 28;
+    case 4:
+    case 6:
+    case 9:
+    case 11:
+    default: return 30;
+  }
+};
+
