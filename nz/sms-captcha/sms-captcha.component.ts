@@ -75,7 +75,7 @@ export class SmsCaptchaComponent implements OnInit {
   public captchaText = '获取验证码';
 
   // 验证码计时器标识符
-  public captchaIntervalFlag = -1;
+  public captchaIntervalFlag: any = -1;
 
   // 验证码倒计时
   public captchaCountdown = 0;
