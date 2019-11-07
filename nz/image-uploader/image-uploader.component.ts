@@ -52,6 +52,10 @@ export class ImageUploaderComponent implements OnInit, ControlValueAccessor {
   @Input()
   placeholder: string = null;
 
+  // 图片高度
+  @Input()
+  height = 150;
+
   // input标签
   @ViewChild('fileUploader', { static: true })
   fileUploader: ElementRef<HTMLInputElement>;

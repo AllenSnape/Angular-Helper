@@ -1,13 +1,17 @@
 <div *ngIf="!readOnly && !disabled" class="image-uploader-buttons">
-  <button nz-button nzType="primary" (click)="showFileSelector();">
-    <span [ngClass]="{ 'required-button': required !== false }">上传{{ label }}</span>
-  </button>
-  <button *ngIf="value" nz-button nzType="danger"
-          nz-popconfirm nzPopconfirmTitle="确定删除?" (nzOnConfirm)="onFileSelect();">删除{{ label }}</button>
+  <nz-button-group>
+    <button nz-button nzType="primary" (click)="showFileSelector();">
+      <span [ngClass]="{ 'required-button': required !== false }">上传{{ label }}</span>
+    </button>
+    <button *ngIf="value" nz-button nzType="danger"
+            nz-popconfirm nzPopconfirmTitle="确定删除?" (nzOnConfirm)="onFileSelect();">
+      <i nz-icon nzType="delete" nzTheme="outline"></i>删除
+    </button>
+  </nz-button-group>
 </div>
 <div class="image-uploader-image">
-  <img *ngIf="value" (click)="showImageInNewTab(value);" [src]="value" [alt]="label" [title]="label" />
-  <img *ngIf="!value" [src]="placeholder || LOGO" [alt]="label" [title]="label" />
+  <img *ngIf="value" (click)="showImageInNewTab(value);" [src]="value" [alt]="label" [title]="label" [height]="height" />
+  <img *ngIf="!value" [src]="placeholder || LOGO" [alt]="label" [title]="label" [height]="height" />
 </div>
 
 <input #fileUploader type="file" accept="image/*" style="display: none;" (change)="onFileSelect($event);" />
