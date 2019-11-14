@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {NzMessageService} from 'ng-zorro-antd';
 
 import * as OSS from 'ali-oss';
@@ -156,7 +156,13 @@ export class OssService {
           this.client.list({ prefix: name }).then(list => {
             // 不存在则上传文件
             if (!list.objects || list.objects.length === 0) {
-              this.client.put(name, file).then(res => {
+              this.client.put(name, file, {
+                headers: {
+                  'Content-Disposition': 'inline',
+                  'Cache-Control': 'max-age=3600',
+                  Expires: '3600000',
+                }
+              }).then(res => {
                 subscriber.next(res.name);
                 subscriber.complete();
               }).catch(e => {
@@ -269,7 +275,7 @@ export interface OSSClient {
    * Add an object to the bucket.
    * @see https://github.com/ali-sdk/ali-oss?spm=a2c4g.11186623.2.13.39f929161kWpGT#putname-file-options
    */
-  put: (name: string, file: string | Blob | File, options?: { timeout?: number, mime?: string, meta?: any, callback?: (url: string, host?: string, body?: string, contentType?: string, customValue?: any) => void }, headers?: any) => Promise<OSSPutRes>;
+  put: (name: string, file: string | Blob | File, options?: { timeout?: number, mime?: string, meta?: any, callback?: (url: string, host?: string, body?: string, contentType?: string, customValue?: any) => void, headers?: any }) => Promise<OSSPutRes>;
 
   /**
    * Create a signature url for download or upload object. When you put object with signatureUrl ,you need to pass Content-Type.Please look at the example.
