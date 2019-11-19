@@ -156,13 +156,7 @@ export class OssService {
           this.client.list({ prefix: name }).then(list => {
             // 不存在则上传文件
             if (!list.objects || list.objects.length === 0) {
-              this.client.put(name, file, {
-                headers: {
-                  'Content-Disposition': 'inline',
-                  'Cache-Control': 'max-age=3600',
-                  Expires: '3600000',
-                }
-              }).then(res => {
+              this.client.put(name, file).then(res => {
                 subscriber.next(res.name);
                 subscriber.complete();
               }).catch(e => {
