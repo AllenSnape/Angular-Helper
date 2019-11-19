@@ -26,11 +26,18 @@ export class SmsCaptchaComponent implements OnInit {
   /**
    * 获取验证码
    * @param number 手机号
-   * @param validator 附加的验证内容: 发送验证码的验证码图片或者一个人机确认回调key
    * @return true: 发送成功
    */
   @Input()
-  public getCaptcha: (number: string, validator?: string) => Observable<boolean>;
+  public getCaptcha: (number: string) => Observable<boolean>;
+
+  /**
+   * 获取验证码前调用的方法
+   * @param number 手机号
+   * @return false时, 不继续操作
+   */
+  @Input()
+  public beforeGetCaptcha: (number: string) =>  Observable<boolean> | boolean;
 
   // 手机号标签
   @Input()
@@ -86,7 +93,22 @@ export class SmsCaptchaComponent implements OnInit {
   public sendCaptcha(): void {
     clearInterval(this.captchaIntervalFlag);
 
-    this.getCaptcha(this.form.get(this.numberField).value).subscribe(res => {
+    const number = this.form.get(this.numberField).value;
+
+    if (this.beforeGetCaptcha) {
+      const beforeGet = this.beforeGetCaptcha.call(this);
+      if (beforeGet instanceof Observable) {
+        beforeGet.subscribe(res => res === false ? void 0 : this.doSentCaptcha(number));
+      } else if (beforeGet === false) {
+        return;
+      }
+    }
+
+    this.doSentCaptcha(number);
+  }
+
+  private doSentCaptcha(number: string) {
+    this.getCaptcha(number).subscribe(res => {
       if (res) {
         this.msg.success('验证码发送成功, 请注意查收!');
 
